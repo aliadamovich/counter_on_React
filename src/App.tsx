@@ -51,8 +51,8 @@ function App() {
 					/>
 					<span>Max value: {maxValue}</span>
 					<div className={s.board}>
-						<Button title='inc' onClick={incrementCounter} disabled={value >= maxValue} />
-						<Button title='reset' onClick={resetCounter} disabled={value === 0}/>
+						<Button title='inc' onClick={incrementCounter} disabled={value >= maxValue || error || editMode} />
+						<Button title='reset' onClick={resetCounter} disabled={value === 0 || error || editMode}/>
 					</div>
 				</div>
 				

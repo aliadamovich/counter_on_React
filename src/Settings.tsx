@@ -14,30 +14,28 @@ type SettingsPropsType = {
 export const Settings = ({ maxValue, value, setSettings, setEditMode, setError, error }: SettingsPropsType) => {
 	const [max, setMax] = useState<number>(maxValue);
 	const [min, setMin] = useState<number>(value);
-	// const [error, setError] = useState(false)
 
-	const onMaxValueChange = (e: ChangeEvent<HTMLInputElement>) => {
+
+	const handleValueChange = (value: number, isMax: boolean) => {
 		setEditMode(true);
-		if (Number(e.currentTarget.value) <= min || min < 0) {
+
+		if (((isMax && value <= min )|| (isMax && min < 0)) || ((!isMax && value >= max )|| (!isMax && value < 0))){
 			setError(true)
 		} else {
 			setError(false)
 		}
-		setMax(Number(e.currentTarget.value))
+		if (isMax) {
+				setMax(value)
+			} else {
+				setMin(value)
+			}
 	}
 
-	const onMinValueChange = (e: ChangeEvent<HTMLInputElement>) => {
-		if (Number(e.currentTarget.value) < 0 || Number(e.currentTarget.value) >= max ) {
-			setError(true)
-		} else {
-			setError(false)
-		}
-		setMin(Number(e.currentTarget.value))
-		
-	}
-	
+	const onMaxValueChange = (value: number) => { handleValueChange(value, true) }
+	const onMinValueChange = (value: number) => { handleValueChange(value, false)}
 
-	const onSettingsClickHandler = ( ) => {
+
+	const onButtonClickHandler = ( ) => {
 		setEditMode(false)
 		setSettings(max, min)
 	}
@@ -45,41 +43,40 @@ export const Settings = ({ maxValue, value, setSettings, setEditMode, setError, 
 	return (
 		<div className={s.counter}>
 			<div className={s.board}>
-				{/* <InputWithSettings labelTitle={'max value: '} maxValue={maxValue}/>
-				<InputWithSettings labelTitle={'min value: '} value={value}/> */}
-
-				<label>max value: 
-					<input type="number" value={max} onChange={onMaxValueChange}
-					className={error ? s.error : ''}
-					/>
-				</label>
-				<label>start value: 
-					<input type="number" value={min} onChange={onMinValueChange} 
-						className={error ? s.error : ''}
-					/>
-				</label>
+				<InputWithSettings labelTitle={'max value: '} value={max} setCurrentValue={onMaxValueChange} error={error}/>
+				<InputWithSettings labelTitle={'min value: '} value={min} setCurrentValue={onMinValueChange} error={error}/>
 			</div>
 			
 			<div className={s.board}>
-				<Button title='set' onClick={onSettingsClickHandler} disabled={error}/>
+				<Button title='set' onClick={onButtonClickHandler} disabled={error}/>
 			</div>
 		</div>
 	)
 }
-// type InputType =  {
-// 	labelTitle: string
-// 	value?: number
-// 	maxValue?: number
-// }
 
-// export const InputWithSettings = (props: InputType) => {
-// 	const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+type InputType = {
+	labelTitle: string
+	value: number
+	setCurrentValue: (value: number) => void
+	error: boolean
+}
 
-// 	}
+export const InputWithSettings = (props: InputType) => {
 
-// 	return (
-// 		<label>{props.labelTitle}
-// 			<input type="number" value={props.maxValue} onChange={onChangeHandler} />
-// 		</label>
-// 	)
-// }
+	const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+		props.setCurrentValue(Number(e.currentTarget.value))
+	}
+
+	return (
+		<label>{props.labelTitle}
+			<input type="number" 
+			value={props.value}
+			onChange={onChangeHandler} 
+			className={props.error ? s.error : ''}
+			/>
+		</label>
+	)
+}
+
+
+

@@ -12,15 +12,28 @@ export const Board = ({ value, className, editMode, error }: ValuePropsType) => 
 
 	return (
 		<div className={s.board}>
-			{editMode ? 
-			<p className={s.text}>enter values and press 'set'</p> 
-		
-				: error ? <p className={s.text}>Incorrect value!</p> :
-				<span className={className}>{value}</span>
-			}
 
-			{/* {
-				error ? <p className={s.text}>Incorrect value!</p> : <span className={className}>{value}</span>
+
+			{/* {editMode ? (
+				<p className={s.text}>enter values and press 'set'</p>
+			) : error ? (
+				<p className={s.text}>Incorrect value!</p>
+			) : (
+				<span className={className}>{value}</span>
+			)} */}
+
+			{error ? (
+				<p className={s.text}>Incorrect value!</p>
+			) : editMode ? (
+				<p className={s.text}>enter values and press 'set'</p>
+			) : (
+				<span className={className}>{value}</span>
+			)}
+{/* 
+			{editMode && <p className={s.text}>enter values and press 'set'</p>}
+			{error ? 
+				<p className={s.text}>Incorrect value!</p>
+			 : !editMode && <span className={className}>{value}</span>
 			} */}
 		</div>
 	)
