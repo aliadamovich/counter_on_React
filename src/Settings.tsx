@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import s from './App-styled.module.css'
 import { Button } from './Button';
 
@@ -14,6 +14,13 @@ type SettingsPropsType = {
 export const Settings = ({ maxValue, value, setSettings, setEditMode, setError, error }: SettingsPropsType) => {
 	const [max, setMax] = useState<number>(maxValue);
 	const [min, setMin] = useState<number>(value);
+
+	useEffect(() => {
+		const minValueFromStorage = JSON.parse(localStorage.getItem('minValue') || '')
+		const maxValueFromStorage = JSON.parse(localStorage.getItem('maxValue') || '')
+		setMin(minValueFromStorage)
+		setMax(maxValueFromStorage)
+	}, [])
 
 
 	const handleValueChange = (value: number, isMax: boolean) => {
