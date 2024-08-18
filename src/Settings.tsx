@@ -15,12 +15,12 @@ export const Settings = ({ maxValue, value, setSettings, setEditMode, setError, 
 	const [max, setMax] = useState<number>(maxValue);
 	const [min, setMin] = useState<number>(value);
 
-	useEffect(() => {
-		const minValueFromStorage = JSON.parse(localStorage.getItem('minValue') || '')
-		const maxValueFromStorage = JSON.parse(localStorage.getItem('maxValue') || '')
-		setMin(minValueFromStorage)
-		setMax(maxValueFromStorage)
-	}, [])
+	// useEffect(() => {
+	// 	const minValueFromStorage = JSON.parse(localStorage.getItem('minValue') || '')
+	// 	const maxValueFromStorage = JSON.parse(localStorage.getItem('maxValue') || '')
+	// 	setMin(minValueFromStorage)
+	// 	setMax(maxValueFromStorage)
+	// }, [])
 
 
 	const handleValueChange = (value: number, isMax: boolean) => {

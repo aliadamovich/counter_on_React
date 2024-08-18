@@ -4,42 +4,48 @@ import { Board } from './Board';
 import { useEffect, useState } from 'react';
 import { Button } from './Button';
 import { Settings } from './Settings';
+import { useSelector } from 'react-redux';
+import { incrementCounterAC, InitialStateType, resetCounterAC, setValuesAC } from './components/state/reducers/ValuesReducer';
+import { AppRootStateType } from './components/state/store';
+import { useDispatch } from 'react-redux';
+import { getStateFromLocalStorage } from './localStorage';
 
 
 function App() {
-	const [value, setValue] = useState<number>(0);
-	const [maxValue, setMaxValue] = useState<number>(5);
 	const [editMode, setEditMode] = useState(false)
 	const [error, setError] = useState(false)
 
+	const value = useSelector<AppRootStateType, number>(state => state.counterValues.minValue)
+	const maxValue = useSelector<AppRootStateType, number>(state => state.counterValues.maxValue)
+	const dispatch = useDispatch();
 
-	useEffect(() => {
-		const minValueFromStorage = JSON.parse(localStorage.getItem('minValue') || '')
-		const maxValueFromStorage = JSON.parse(localStorage.getItem('maxValue') || '')
-		setValue(minValueFromStorage)
-		setMaxValue(maxValueFromStorage)
-	}, [])
+//*localStorage
+	// useEffect(() => {
+	// 	const minValueFromStorage = JSON.parse(localStorage.getItem('minValue') || '')
+	// 	const maxValueFromStorage = JSON.parse(localStorage.getItem('maxValue') || '')
+	// 	setValue(minValueFromStorage)
+	// 	setMaxValue(maxValueFromStorage)
+	// }, [])
 
-	useEffect(() => {
-		localStorage.setItem('minValue', JSON.stringify(value));
-		localStorage.setItem('maxValue', JSON.stringify(maxValue));
+	// useEffect(() => {
+	// 	localStorage.setItem('minValue', JSON.stringify(value));
+	// 	localStorage.setItem('maxValue', JSON.stringify(maxValue));
 
-	}, [value, maxValue])
+	// }, [value, maxValue])
+//*
 
 
 	const incrementCounter = () => {
 		if (value >= maxValue) return
-		setValue(value + 1) //правильнее
+		dispatch(incrementCounterAC())
 	}
 
 	const resetCounter = () => {
-		setValue(0)
-		// setMaxValue(setRandomMaxValue())
+		dispatch(resetCounterAC())
 	}
 
 	const setSettings = (max: number, min: number) => {
-		setValue(min)
-		setMaxValue(max)
+		dispatch(setValuesAC(min, max))
 	}
 
 	
@@ -62,6 +68,8 @@ function App() {
 						editMode={editMode}
 						error={error}
 					/>
+					{/* <button onClick={saveStateToLocalStorage } >save</button>
+					<button onClick={getStateFromLocalStorage } >get</button> */}
 					<span>Max value: {maxValue}</span>
 					<div className={s.board}>
 						<Button title='inc' onClick={incrementCounter} disabled={value >= maxValue || error || editMode} />
