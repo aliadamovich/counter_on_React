@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { getStateFromLocalStorage } from './localStorage';
 
 
+
 function App() {
 	const [editMode, setEditMode] = useState(false)
 	const [error, setError] = useState(false)
@@ -76,7 +77,6 @@ function App() {
 						<Button title='reset' onClick={resetCounter} disabled={value === 0 || error || editMode}/>
 					</div>
 				</div>
-				
 						{/* <ProgressBar width={(value / maxValue * 100) + '%'} /> */}
 			</div>
     );

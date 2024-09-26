@@ -1,5 +1,3 @@
-import { getStateFromLocalStorage } from "../../../localStorage";
-
 
 export type InitialStateType = typeof initialValues;
 
